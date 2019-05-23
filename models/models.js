@@ -5,15 +5,15 @@ const Schema = mongoose.Schema
 mongoose.connect('mongodb://localhost:27017/keyrent', {useNewUrlParser:true})
 
 const userSchema = Schema({
-    name: String,
-    surname: String,
+    name: {type:String, required:true},
+    surname: {type:String, required:true},
     email: {type: String, unique:true},
-    type: String,
-    password: String,
+    type: {type:String, required:true},
+    password: {type:String, required:true},
 })
 
-userSchema.statics.findByCredentials = async (name, password) => {
-    const user = await User.findOne({ name: name })
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email: email })
     if (!user) {
         throw new Error('Unable to login')
     }
@@ -37,17 +37,17 @@ userSchema.pre('save', async function (next) {
 
 
 const flatSchema = Schema({
-    address: String,
-    floor: String,
+    address: {type:String, required:true},
+    floor: {type:String, required:true},
     owner: {type:Schema.Types.ObjectId, ref:'User'},
-    price: Number,
+    price: {type:Number, required:true},
     request: {type:Schema.Types.ObjectId, ref: 'Request'},
     rentor: {type:Schema.Types.ObjectId, ref: 'User'},
 })
 
 const requestSchema = Schema({
-    type:String,
-    body:String,
+    type:{type:String, required:true},
+    body:{type:String, required:true},
     completed: Boolean
 })
 

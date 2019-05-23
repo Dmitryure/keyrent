@@ -17,6 +17,8 @@
     "jasmine": "^3.3.1",
     "mongoose": "^5.4.13",
     "morgan": "^1.9.1",
+    "node-mandrill": "^1.0.1",
+    "nodemailer": "^6.1.1",
     "session-file-store": "^1.2.0"
   }
 }
