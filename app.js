@@ -18,40 +18,32 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res, next) => {
-  res.send('privet')
-})
+// Импорт маршрутов.
+const indexRouter = require("./routes/index");
 
-app.post('/register', async (req, res, next) => {
-  try {
-    let user = req.body
-    saveToDb(User, user)
-    res.sendStatus(201)
-  }
-  catch (e) {
-    res.send(e)
-  }
-})
 
-app.post('/addApartment', async(req, res, next) => {
-  try{
-    let user = req.session._id
-    if(user){
-      let newFlat = {
-        address:req.body.address,
-        floor:req.body.floor,
-        owner:user,
-        price:req.body.price
-      }
-    res.send(newFlat)
-    
-    }else{
-      res.send({e: 'Please login'})
-    }
-  }catch(e){
+//session
+const session = require('express-session');
 
-  }
-})
+let FileStore = require('session-file-store')(session)
+
+let sessionConfig = {
+  secret: 'keyboard cat',
+  cookie: {
+    expires: 30000
+  },
+  resave: false,
+  saveUninitialized: true,
+  store: new FileStore({}),
+}
+
+app.use(session(sessionConfig));
+
+// Подключаем импортированные маршруты с определенным url префиксом.
+app.use('/', indexRouter);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -72,3 +64,4 @@ app.use(function (err, req, res, next) {
 
 
 module.exports = app;
+

@@ -1,0 +1,18 @@
+<div class='post-container'>
+    {{#each title}}
+            <span class=''>{{this.price}}</span>
+            <span class=''>{{this.address}}</span>
+            <span class=''>{{this.floor}}</span>
+            <p>{{this.owner.name}}</p>
+            <p>{{this.owner.surname}}</p>
+            <p>{{this.owner.email}}</p>
+            <p>{{this.owner.type}}</p>
+            <p>{{this.request.type}}</p>
+            <p>{{this.request.body}}</p>
+            <p>{{this.rentor.name}}</p>
+            <p>{{this.rentor.surname}}</p>
+            <p>{{this.rentor.email}}</p>
+            <p>{{this.rentor.type}}</p>
+    </article>
+    {{/each}}
+</div>
