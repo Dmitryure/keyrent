@@ -1,12 +1,29 @@
-<form action="/home" method="post">
-    <input type="text" placeholder="name">
+<script src="/register.js"></script>
+
+<form id='reg-form'>
+    <div class="form-group">
+        <label>Enter your name</label>
+        <input type="text" class="form-control" id="inputName" aria-describedby="emailHelp" placeholder="Enter name">
+    </div>
+    <div class="form-group">
+        <label>Enter your surnaname</label>
+        <input type="text" class="form-control" id="inputSurname" aria-describedby="emailHelp"
+            placeholder="Enter surname">
+    </div>
+    <div class="form-group">
+        <label>Email address</label>
+        <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp"
+            placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input id='type' type="text" class="form-control" placeholder="owner/renter">
+    </div>
     <p></p>
-    <input type="text" placeholder="surname">
-    <p></p>
-    <input type="text" placeholder="password">
-    <p></p>
-    <input type="password" placeholder="email">
-    <p></p>
-    <input type="text" placeholder="owner/renter">
-    <button type="submit">Submit</button>
+    <button class="btn btn-primary">Submit</button>
 </form>

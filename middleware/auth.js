@@ -1,6 +1,6 @@
 function checkSession(req, res, next) {
-    if(!req.session._id) {
-        res.redirect('/reg')
+    if(!req.session.id) {
+        res.redirect('/log')
     };
     next();
 };
