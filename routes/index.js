@@ -74,6 +74,44 @@ router.get('/addflat', function (req, res) {
 
 
 
+router.get('/', (req, res, next) => {
+  res.send('privet')
+})
+
+router.post('/register', async (req, res, next) => {
+  try {
+    let user = req.body
+    saveToDb(User, user)
+    res.sendStatus(201)
+  }
+  catch (e) {
+    res.send(e)
+  }
+})
+
+router.post('/addApartment', async(req, res, next) => {
+  try{
+    let user = req.session._id
+    if(user){
+      let newFlat = {
+        address:req.body.address,
+        floor:req.body.floor,
+        owner:user,
+        price:req.body.price
+      }
+    res.send(newFlat)
+    
+    }else{
+      res.send({e: 'Please login'})
+    }
+  }catch(e){
+
+  }
+})
+
+
+
+
 
 
 
