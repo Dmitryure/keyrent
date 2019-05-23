@@ -24,7 +24,6 @@ function sendEmail(type, email, text_message) {
     })
 }
 
-function send
 
 
 
