@@ -7,35 +7,31 @@ const sendEmail = require('../middleware/mailer.js')
 const multer = require('multer')
 const upload = multer({dest: 'uploads/'})
 /* GET home page. */
-router.get('/apartments', checkSession, function (req, res, next) {
-
-  res.render('apartments', { title: [flat, flat2] });
-});
 
 
-router.get('/home', function (req, res) {
-  res.render('homepage');
-});
-
-router.get('/', function (req, res) {
+router.get('/log', function (req, res) {
   res.render('logopage');
 });
 
-router.post('/login', async (req, res, next) => {
-  console.log(req.body.email)
-  console.log(req.body.password)
-  try {
+router.get('/', function (req, res) {
+  res.render('showing-flat');
+});
 
-    let user = await User.findByCredentials(req.body.email, req.body.password)
-    console.log(user)
-    req.session._id = user._id
 
-    res.send(req.session._id)
-  } catch (e) {
-    res.send(e)
-  }
-})
+router.get('/showflat', async function (req, res) {
+  let flats = await Flat.find();
+  res.render('showing-flat', { flats: flats });
+});
 
+router.get('/showoneflat/:id', async function (req, res) {
+  let flat = await Flat.findById(req.params.id);
+
+  res.render('show-one-flat', {
+    price: flat.price,
+    floor: flat.floor,
+    address: flat.address
+  });
+});
 
 // router.post('/logIn', async function (req, res) {
 //   let user = await User.find({ email: req.body.email })
@@ -68,7 +64,7 @@ router.post('/reg', async function (req, res) {
   res.json(user)
 });
 
-router.get('/addflat', function (req, res) {
+router.get('/addflat', checkSession, function (req, res) {
   res.render('add_apart');
 });
 
@@ -99,11 +95,17 @@ router.post('/login', async (req, res, next) => {
     req.session._id = user._id
     req.session.type = user.type
 
-    res.send(req.session._id)
+    res.send(req.session._id);
   } catch (e) {
     res.send(e)
   }
-})
+});
+
+router.get('/logout', (req, res, next) => {
+  req.session.destroy();
+  res.redirect('/')
+
+});
 
 router.post('/addrequest', async (req, res, next) => {
   let requestType = req.body.type
@@ -152,11 +154,7 @@ router.post('/addApartment', upload.single('foto'), async (req, res, next) => {
 
 router.post('/prosmotr', async (req, res, next) => {
   let user = req.session._id
-
 })
-
-
-
 
 
 

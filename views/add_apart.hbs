@@ -1,12 +1,35 @@
 <script src="/adding-apartments.js"></script>
 
 
-<form id='add-app-form' action="/home" method="post">
-    <input id="inputAddress" type="text" placeholder="address">
+{{!-- <form id='' action="/home" method="post">
+    <input id="inputAddress" type="text" ">
     <p></p>
     <input id="inputFloor" type="text" placeholder="floor">
     <p></p>
     <input id="inputPrice" type="text" placeholder="price">
     <p></p>
     <button type="submit">Submit</button>
+</form> --}}
+
+
+<form id='add-app-form'>
+    <div class="form-group">
+        <label>Адрес</label>
+        <input type="text" class="form-control" id="inputAddress" aria-describedby="emailHelp" placeholder="Адрес">
+    </div>
+    <div class="form-group">
+        <label>Этаж</label>
+        <input type="text" class="form-control" id="inputFloor" aria-describedby="emailHelp" placeholder="Этаж">
+    </div>
+    <div class="form-group">
+        <label>Цена</label>
+        <input type="email" class="form-control" id="inputPrice" aria-describedby="emailHelp" placeholder="Цена">
+    </div>
+    <div class="form-group">
+        <label>Добавьте фотографию</label>
+        <input type="file" name='foto' class="form-control" id="inputPrice" aria-describedby="emailHelp"
+            placeholder="фото">
+    </div>
+    <p></p>
+    <button class="btn btn-primary">Отправить</button>
 </form>
