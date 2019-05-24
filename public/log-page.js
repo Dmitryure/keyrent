@@ -17,7 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             body: JSON.stringify(otvet)
         });
-        let response = res.text()
+        let response = res.text();
+        window.location = '/addflat'
     });
 });
 

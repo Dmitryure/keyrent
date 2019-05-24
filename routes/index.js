@@ -6,35 +6,31 @@ const { User, Flat, Request } = require('../models/models.js')
 const sendEmail = require('../middleware/mailer.js')
 
 /* GET home page. */
-router.get('/apartments', checkSession, function (req, res, next) {
-
-  res.render('apartments', { title: [flat, flat2] });
-});
 
 
-router.get('/home', function (req, res) {
-  res.render('homepage');
-});
-
-router.get('/', function (req, res) {
+router.get('/log', function (req, res) {
   res.render('logopage');
 });
 
-router.post('/login', async (req, res, next) => {
-  console.log(req.body.email)
-  console.log(req.body.password)
-  try {
+router.get('/', function (req, res) {
+  res.render('showing-flat');
+});
 
-    let user = await User.findByCredentials(req.body.email, req.body.password)
-    console.log(user)
-    req.session._id = user._id
- 
-    res.send(req.session._id)
-  } catch (e) {
-    res.send(e)
-  }
- })
 
+router.get('/showflat', async function (req, res) {
+  let flats = await Flat.find();
+  res.render('showing-flat', { flats: flats });
+});
+
+router.get('/showoneflat/:id', async function (req, res) {
+  let flat = await Flat.findById(req.params.id);
+
+  res.render('show-one-flat', {
+    price: flat.price,
+    floor: flat.floor,
+    address: flat.address
+  });
+});
 
 // router.post('/logIn', async function (req, res) {
 //   let user = await User.find({ email: req.body.email })
@@ -54,7 +50,7 @@ router.post('/login', async (req, res, next) => {
 
 router.post('/reg', async function (req, res) {
   console.log(req.body.emailName);
-  
+
   const user = new User({
     name: req.body.name,
     surname: req.body.surname,
@@ -67,7 +63,7 @@ router.post('/reg', async function (req, res) {
   res.json(user)
 });
 
-router.get('/addflat', function (req, res) {
+router.get('/addflat', checkSession, function (req, res) {
   res.render('add_apart');
 });
 
@@ -82,7 +78,7 @@ router.post('/register', async (req, res, next) => {
   try {
     let user = req.body
     await saveToDb(User, user)
-    let textMessage = "Регистрация нового пользователя успешна e-mail:" + req.body.email 
+    let textMessage = "Регистрация нового пользователя успешна e-mail:" + req.body.email
     sendEmail('Регистрация нового пользователя', 'test@mail.ru', textMessage)
     res.sendStatus(201)
   }
@@ -97,11 +93,17 @@ router.post('/login', async (req, res, next) => {
     console.log(user)
     req.session._id = user._id
 
-    res.send(req.session._id)
+    res.send(req.session._id);
   } catch (e) {
     res.send(e)
   }
-})
+});
+
+router.get('/logout', (req, res, next) => {
+  req.session.destroy();
+  res.redirect('/')
+
+});
 
 router.post('/addApartment', async (req, res, next) => {
   try {
@@ -114,8 +116,8 @@ router.post('/addApartment', async (req, res, next) => {
         price: req.body.price
       }
       await saveToDb(Flat, newFlat)
-      let textMessage = "Зарегистрирована новая квартира по адресу " + newFlat.address 
-      
+      let textMessage = "Зарегистрирована новая квартира по адресу " + newFlat.address
+
       res.send(newFlat)
 
     } else {
@@ -128,7 +130,7 @@ router.post('/addApartment', async (req, res, next) => {
 
 router.post('/prosmotr', async (req, res, next) => {
   let user = req.session._id
-  if(user){
+  if (user) {
     prosmotr
   }
 })

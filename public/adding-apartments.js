@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const addApart = document.getElementById('addApart');
+    const addApart = document.getElementById('add-app-form');
 
     addApart.addEventListener('submit', async e => {
         e.preventDefault();
 
 
-        const inpAddress = document.getElementById('address').value;
-        const inpFloor = document.getElementById('floor').value;
-        const inpPrice = document.getElementById('price').value;
+        const inpAddress = document.getElementById('inputAddress').value;
+        const inpFloor = document.getElementById('inputFloor').value;
+        const inpPrice = document.getElementById('inputPrice').value;
 
         let otvet = {
             address: inpAddress,
@@ -15,8 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             price: Number(inpPrice)
         };
 
-
-        let res = await fetch('/addApartment', {
+        await fetch('/addApartment', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -24,6 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             body: JSON.stringify(otvet)
         });
-        let response = res.text();
+        // let response = res.text();
     });
 });

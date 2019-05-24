@@ -27,4 +27,4 @@ function sendEmail(type, email, text_message) {
 
 
 
-module.exports = sendEmail
+module.exports = sendEmail;
