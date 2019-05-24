@@ -34,25 +34,19 @@ userSchema.pre('save', async function (next) {
     next()
 })
 
-
-
 const flatSchema = Schema({
     address: {type:String, required:true},
     floor: {type:String, required:true},
+    image: String,
     owner: {type:Schema.Types.ObjectId, ref:'User'},
     price: {type:Number, required:true},
-    request: {type:Schema.Types.ObjectId, ref: 'Request'},
-    rentor: {type:Schema.Types.ObjectId, ref: 'User'},
+    request: [{type:Object}],
+    rentor: [{type:Schema.Types.ObjectId, ref: 'User'}],
 })
 
-const requestSchema = Schema({
-    type:{type:String, required:true},
-    body:{type:String, required:true},
-    completed: Boolean
-})
 
 const User = mongoose.model('User', userSchema)
 const Flat = mongoose.model('Flat', flatSchema)
-const Request = mongoose.model('Request', requestSchema)
 
-module.exports = { User, Flat, Request }
+
+module.exports = { User, Flat }

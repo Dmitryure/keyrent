@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const checkSession = require('../middleware/auth');
 const saveToDb = require('../helper.js')
-const { User, Flat, Request } = require('../models/models.js')
+const { User, Flat } = require('../models/models.js')
 const sendEmail = require('../middleware/mailer.js')
-
+const multer = require('multer')
+const upload = multer({dest: 'uploads/'})
 /* GET home page. */
 
 
@@ -92,6 +93,7 @@ router.post('/login', async (req, res, next) => {
     let user = await User.findByCredentials(req.body.email, req.body.password)
     console.log(user)
     req.session._id = user._id
+    req.session.type = user.type
 
     res.send(req.session._id);
   } catch (e) {
@@ -105,19 +107,40 @@ router.get('/logout', (req, res, next) => {
 
 });
 
-router.post('/addApartment', async (req, res, next) => {
+router.post('/addrequest', async (req, res, next) => {
+  let requestType = req.body.type
+  let request = req.body.request
+  let appartmentId = req.body.appartmentId
+  let textMessage = 'Новая просьба об оказании услуги добавлена'
+  if (req.session._id && req.session.type) {
+    try {
+      let body = {
+        type: requestType,
+        body: request,
+        completed: false
+      }
+      let appartment = await Flat.findOneAndUpdate({_id:appartmentId}, {$push:{request:body}})
+      sendEmail(requestType, "test@mail.ru", textMessage)
+      res.send(appartment)
+    } catch (e) {
+      res.send(e)
+    }
+  } 
+})
+
+router.post('/addApartment', upload.single('foto'), async (req, res, next) => {
   try {
     let user = req.session._id
     if (user) {
       let newFlat = {
         address: req.body.address,
         floor: req.body.floor,
+        image: file.paths,
         owner: user,
         price: req.body.price
       }
       await saveToDb(Flat, newFlat)
       let textMessage = "Зарегистрирована новая квартира по адресу " + newFlat.address
-
       res.send(newFlat)
 
     } else {
