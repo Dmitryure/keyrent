@@ -1,8 +1,25 @@
 body {
-  padding: 50px;
+  padding-left: 100px;
+  padding-right: 100px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
 }
+
+#exit {
+  padding-left: 400px;
+}
+
+
+#logo{
+  width: 2000px;
+  height: 70px;
+}
+
+/* .card-img-top {
+  width: 50%;
+  height: 30%;
+  object-fit: cover;
+} */

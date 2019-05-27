@@ -12,7 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const inputPassword = document.getElementById('inputPassword').value;
         const type = document.getElementById('type').value;
 
-        await fetch('/reg', {
+        let isOwner = 0
+        if(type === 'Арендодатель'){
+            isOwner = 1
+        }
+        await fetch('/register', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -22,10 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 name: inputName,
                 surname: inputSurname,
                 email: inputEmail,
-                type: type,
+                type: isOwner,
                 password: inputPassword
             })
         });
+
+        window.location ='/showflat'
     });
 
 

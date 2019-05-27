@@ -4,32 +4,47 @@ const checkSession = require('../middleware/auth');
 const saveToDb = require('../helper.js')
 const { User, Flat } = require('../models/models.js')
 const sendEmail = require('../middleware/mailer.js')
-const multer = require('multer')
-const upload = multer({dest: 'uploads/'})
+// const multer = require('multer')
+// const upload = multer({dest: 'uploads/'})
+
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname + '-' + Date.now() + '.jpg')
+  }
+});
+const upload = multer({ storage: storage });
 /* GET home page. */
 
 
 router.get('/log', function (req, res) {
-  res.render('logopage');
+  res.render('logopage', { type: req.session.type, user: req.session._id });
 });
 
 router.get('/', function (req, res) {
-  res.render('showing-flat');
+  res.redirect('/showflat');
 });
 
 
 router.get('/showflat', async function (req, res) {
   let flats = await Flat.find();
-  res.render('showing-flat', { flats: flats });
+  res.render('showing-flat', { flats: flats, type: req.session.type, user: req.session._id });
 });
 
-router.get('/showoneflat/:id', async function (req, res) {
+router.get('/showoneflat/:id', checkSession, async function (req, res) {
   let flat = await Flat.findById(req.params.id);
+
 
   res.render('show-one-flat', {
     price: flat.price,
     floor: flat.floor,
-    address: flat.address
+    address: flat.address,
+    image: flat.image,
+    type: req.session.type,
+    user: req.session._id
   });
 });
 
@@ -56,7 +71,7 @@ router.post('/reg', async function (req, res) {
     name: req.body.name,
     surname: req.body.surname,
     email: req.body.email,
-    type: req.body.type,
+    type: Number(req.body.type),
     password: req.body.password
   });
 
@@ -65,22 +80,22 @@ router.post('/reg', async function (req, res) {
 });
 
 router.get('/addflat', checkSession, function (req, res) {
-  res.render('add_apart');
+  res.render('add_apart', { type: req.session.type, user: req.session._id });
 });
 
 
 
 
 router.get('/reg', (req, res, next) => {
-  res.render('regpage')
+  res.render('regpage', { type: req.session.type, user: req.session._id })
 })
 
 router.post('/register', async (req, res, next) => {
   try {
     let user = req.body
     await saveToDb(User, user)
-    let textMessage = "Регистрация нового пользователя успешна e-mail:" + req.body.email
-    sendEmail('Регистрация нового пользователя', 'test@mail.ru', textMessage)
+    // let textMessage = "Регистрация нового пользователя успешна e-mail:" + req.body.email
+    // sendEmail('Регистрация нового пользователя', 'test@mail.ru', textMessage)
     res.sendStatus(201)
   }
   catch (e) {
@@ -95,7 +110,7 @@ router.post('/login', async (req, res, next) => {
     req.session._id = user._id
     req.session.type = user.type
 
-    res.send(req.session._id);
+    res.send({ user: req.session._id });
   } catch (e) {
     res.send(e)
   }
@@ -104,7 +119,6 @@ router.post('/login', async (req, res, next) => {
 router.get('/logout', (req, res, next) => {
   req.session.destroy();
   res.redirect('/')
-
 });
 
 router.post('/addrequest', async (req, res, next) => {
@@ -119,31 +133,39 @@ router.post('/addrequest', async (req, res, next) => {
         body: request,
         completed: false
       }
-      let appartment = await Flat.findOneAndUpdate({_id:appartmentId}, {$push:{request:body}})
+      let appartment = await Flat.findOneAndUpdate({ _id: appartmentId }, { $push: { request: body } })
       sendEmail(requestType, "test@mail.ru", textMessage)
       res.send(appartment)
     } catch (e) {
       res.send(e)
     }
-  } 
+  }
 })
 
-router.post('/addApartment', upload.single('foto'), async (req, res, next) => {
+
+
+router.post('/addApartment', async (req, res, next) => {
   try {
     let user = req.session._id
+
+    // let fileTmp = req.file.path;
+    // console.log(fileTmp);
+
     if (user) {
       let newFlat = {
         address: req.body.address,
         floor: req.body.floor,
-        image: file.paths,
+        image: req.body.image,
         owner: user,
         price: req.body.price
-      }
-      await saveToDb(Flat, newFlat)
-      let textMessage = "Зарегистрирована новая квартира по адресу " + newFlat.address
-      sendEmail("Новая квартира", "test@mail.ru", textMessage)
-      res.send(newFlat)
 
+      }
+
+      await saveToDb(Flat, newFlat)
+      // let textMessage = "Зарегистрирована новая квартира по адресу " + newFlat.address
+      // sendEmail("Новая квартира", "test@mail.ru", textMessage)
+      // res.send(newFlat)
+      res.sendStatus(200)
     } else {
       res.send({ e: 'Please login' })
     }
@@ -152,8 +174,12 @@ router.post('/addApartment', upload.single('foto'), async (req, res, next) => {
   }
 })
 
-router.post('/prosmotr', async (req, res, next) => {
-  let user = req.session._id
+router.get('/mailer', async (req, res, next) => {
+  res.render('mialer')
+});
+
+router.post('/done', async (req, res, next) => {
+  res.render('done')
 })
 
 

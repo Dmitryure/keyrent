@@ -5,11 +5,11 @@ const Schema = mongoose.Schema
 mongoose.connect('mongodb://localhost:27017/keyrent', { useNewUrlParser: true })
 
 const userSchema = Schema({
-    name: {type:String, required:true},
-    surname: {type:String, required:true},
-    email: {type: String, unique:true},
-    type: {type:String, required:true},
-    password: {type:String, required:true},
+    name: { type: String, required: true },
+    surname: { type: String, required: true },
+    email: { type: String, unique: true },
+    type: { type: Number, required: true },
+    password: { type: String, required: true },
 })
 
 userSchema.statics.findByCredentials = async (email, password) => {
@@ -32,17 +32,18 @@ userSchema.pre('save', async function (next) {
     }
 
     next()
-})
+});
 
 const flatSchema = Schema({
-    address: {type:String, required:true},
-    floor: {type:String, required:true},
+    address: { type: String, required: true },
+    floor: { type: String, required: true },
     image: String,
-    owner: {type:Schema.Types.ObjectId, ref:'User'},
-    price: {type:Number, required:true},
-    request: [{type:Object}],
-    rentor: [{type:Schema.Types.ObjectId, ref: 'User'}],
-})
+    owner: { type: Schema.Types.ObjectId, ref: 'User' },
+    price: { type: Number, required: true },
+    request: [{ type: Object }],
+    rentor: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    desc: String
+});
 
 
 const User = mongoose.model('User', userSchema)

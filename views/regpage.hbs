@@ -1,19 +1,17 @@
 <script src="/register.js"></script>
 
-<form id='reg-form'>
+<form type='' id='reg-form'>
     <div class="form-group">
         <label>Введите имя</label>
         <input type="text" class="form-control" id="inputName" aria-describedby="emailHelp" placeholder="Имя">
     </div>
     <div class="form-group">
         <label>Введите фамилию</label>
-        <input type="text" class="form-control" id="inputSurname" aria-describedby="emailHelp"
-            placeholder="Фамилия">
+        <input type="text" class="form-control" id="inputSurname" aria-describedby="emailHelp" placeholder="Фамилия">
     </div>
     <div class="form-group">
         <label>Электронная почта</label>
-        <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp"
-            placeholder="почта">
+        <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="почта">
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <div class="form-group">
@@ -22,8 +20,11 @@
     </div>
     <div class="form-group">
         <label>Кем вы являетесь?</label>
-        <input id='type' type="text" class="form-control" placeholder="Арендатор/Арендадатель">
     </div>
-    <p></p>
-    <button class="btn btn-primary">Submit</button>
+    <select id='type' class="form-control">
+        <option>Арендатор</option>
+        <option>Арендодатель</option>
+    </select>
+    <br>
+    <button class="btn btn-primary">Отправить</button>
 </form>

@@ -8,12 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const inpAddress = document.getElementById('inputAddress').value;
         const inpFloor = document.getElementById('inputFloor').value;
         const inpPrice = document.getElementById('inputPrice').value;
+        const inpFoto = document.getElementById('inputFoto').value;
+        const desc = document.getElementById('desc').value;
 
-        let otvet = {
-            address: inpAddress,
-            floor: inpFloor,
-            price: Number(inpPrice)
-        };
+
 
         await fetch('/addApartment', {
             method: 'POST',
@@ -21,8 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(otvet)
+            body: JSON.stringify({
+                address: inpAddress,
+                floor: inpFloor,
+                image: inpFoto,
+                price: Number(inpPrice),
+                desc: desc
+            })
         });
-        // let response = res.text();
+
+        window.location = '/';
     });
 });

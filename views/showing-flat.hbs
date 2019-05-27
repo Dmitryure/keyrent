@@ -1,18 +1,27 @@
-<div class="jumbotron">
-    <hr class="my-24">
-</div>
+{{!-- <div class="card mb-4">
+    <div><img src="{{this.image}}" class="card-img-top" alt="..."></div>
+    <div class="card-body">
+        <h5 class="card-title">{{this.price}}</h5>
+        <p class="card-text">Адрес: {{this.address}}
+            Этаж: {{this.floor}}
+        </p>
+        <p class="card-text"><small class="text-muted"><a href="/showoneflat/{{this.id}}">Подробнее</a></small></p>
+    </div>
+</div> --}}
+
+
 
 {{#each flats}}
-    <div class="card mb-3">
-        <img src="..." class="card-img-top" alt="...">
+<div class="card-deck">
+    <div class="card">
+        <img src="{{this.image}}" class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">{{this.price}}</h5>
             <p class="card-text">Адрес: {{this.address}}
-                Этаж: {{this.floor}}
-            </p>
-            <p class="card-text"><small class="text-muted"><a href="/showoneflat/{{this.id}}">Подробнее</a></small></p>
+                <p class="card-text"> Этаж: {{this.floor}}</p>
+        <p class="card-text"><small class="text-muted"><a href="/showoneflat/{{this.id}}">Подробнее</a></small></p>
         </div>
     </div>
 
+</div>
 {{/each}}
-
