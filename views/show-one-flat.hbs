@@ -29,16 +29,18 @@
     <div class="card-body">
         {{#if type}}
         <h5 class="card-title">Цена: {{price}}</h5>
-        <p class="card-text">Подробное описание квартиры</p>
+        <p class="card-text">{{desc}}</p>
         <a href="#" class="btn btn-primary">Заказать фотосессию</a>
         <a href="#" class="btn btn-primary">Агент</a>
         {{else}}
         <h5 class="card-title">Цена: {{price}}</h5>
-        <p class="card-text">{{this.desc}}</p>
+        <p class="card-text">{{desc}}</p>
         <a href="#" class="btn btn-primary">Химчистка</a>
         <a href="#" class="btn btn-primary">Мувинг</a>
-        <a href="/mailer" class="btn btn-primary">Снять</a>
+        {{!-- <a href="/mailer" class="btn btn-primary">Снять</a> --}}
+        <button id='rentButton'>Снять</button>
 
         {{/if}}
     </div>
 </div>
+<script src="/lk.js"></script>

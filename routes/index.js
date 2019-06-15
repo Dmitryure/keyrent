@@ -36,16 +36,22 @@ router.get('/showflat', async function (req, res) {
 
 router.get('/showoneflat/:id', checkSession, async function (req, res) {
   let flat = await Flat.findById(req.params.id);
-
-
   res.render('show-one-flat', {
     price: flat.price,
     floor: flat.floor,
     address: flat.address,
     image: flat.image,
     type: req.session.type,
-    user: req.session._id
+    user: req.session._id,
+    desc: flat.desc
   });
+});
+
+router.post('/rentFlat', checkSession, async function (req, res) {
+  console.log(req.body.wl)
+  console.log(req.session._id )
+  await Flat.update({ _id: req.body.wl }, {$push: { rentor: req.session._id }
+  })
 });
 
 // router.post('/logIn', async function (req, res) {
@@ -157,8 +163,8 @@ router.post('/addApartment', async (req, res, next) => {
         floor: req.body.floor,
         image: req.body.image,
         owner: user,
-        price: req.body.price
-
+        price: req.body.price,
+        desc: req.body.desc
       }
 
       await saveToDb(Flat, newFlat)
@@ -175,11 +181,21 @@ router.post('/addApartment', async (req, res, next) => {
 })
 
 router.get('/mailer', async (req, res, next) => {
-  res.render('mialer')
+  res.render('mailer')
 });
 
 router.post('/done', async (req, res, next) => {
   res.render('done')
+});
+
+router.get('/lk', async (req, res) => {
+  let flats = await Flat.find({ owner: req.session._id })
+  .populate('rentor')
+
+  
+
+  let rentorFlats = await Flat.find({ rentor: req.session._id })
+  res.render('lk', { flats: flats, type: req.session.type, user: req.session._id, rentorFlats:rentorFlats });
 })
 
 

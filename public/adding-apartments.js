@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const inpFoto = document.getElementById('inputFoto').value;
         const desc = document.getElementById('desc').value;
 
+        console.log(desc);
+        
+
 
 
         await fetch('/addApartment', {

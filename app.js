@@ -31,7 +31,7 @@ let FileStore = require('session-file-store')(session)
 let sessionConfig = {
   secret: 'keyboard cat',
   cookie: {
-    expires: 300000
+    expires: 30000000
   },
   resave: false,
   saveUninitialized: true,

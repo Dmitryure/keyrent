@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const Schema = mongoose.Schema
 
-mongoose.connect('mongodb://localhost:27017/keyrent', { useNewUrlParser: true })
+mongoose.connect('mongodb://localhost:27017/keyrent', { useNewUrlParser: true, useFindAndModify:  false})
 
 const userSchema = Schema({
     name: { type: String, required: true },

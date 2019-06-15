@@ -1,0 +1,38 @@
+{{#if type}}
+{{#each flats}}
+<div class="card-deck">
+    <div class="card">
+        <img src="{{this.image}}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{this.price}}</h5>
+            <p class="card-text">Адрес: {{this.address}}
+                <p class="card-text"> Этаж: {{this.floor}}</p>
+                <ol>
+                    {{#each this.rentor}}
+                    <li>{{this.email}}</li>
+                    {{/each}}
+                </ol>
+        </div>
+    </div>
+</div>
+{{/each}}
+
+{{else}}
+{{#each rentorFlats}}
+
+<div class="card-deck">
+    <div class="card">
+        <img src="{{this.image}}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{this.price}}</h5>
+            <p class="card-text">Адрес: {{this.address}}
+                <p class="card-text"> Этаж: {{this.floor}}</p>
+                <ol>
+                    <li>{{this}}</li>
+                </ol>
+        </div>
+    </div>
+</div>
+{{/each}}
+{{/if}}
+
